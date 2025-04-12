@@ -1,0 +1,44 @@
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (window.location.pathname === '/special-offers-new/') {
+      let widgetContainer = document.getElementById('merchantWidgetContainer');
+
+      if (widgetContainer) {
+        let script = document.createElement('script');
+        script.id = 'merchantWidgetScript';
+        script.src = "https://www.gstatic.com/shopping/merchant/merchantwidget.js";
+        script.defer = true;
+
+        script.onload = function () {
+          console.log("Merchant Widget script loaded.");
+          if (typeof merchantwidget !== "undefined") {
+            merchantwidget.start();
+
+            // Wait for the widget to appear, then move it
+            setTimeout(() => {
+              let widget = document.querySelector("[data-merchant-widget]");
+              if (widget) {
+                widgetContainer.appendChild(widget); // Move it inside the container
+                
+                // Override floating behavior
+                widget.style.position = "relative";
+                widget.style.right = "auto";
+                widget.style.bottom = "auto";
+                widget.style.left = "auto";
+                widget.style.top = "auto";
+                widget.style.width = "100%";
+                widget.style.margin = "20px 0";
+              }
+            }, 2000); // Delay to ensure the widget loads before moving
+          } else {
+            console.error("MerchantWidget is not defined after script load.");
+          }
+        };
+
+        document.body.appendChild(script);
+      } else {
+        console.log("MerchantWidget container not found. Widget will not load.");
+      }
+    }
+  });
+</script>
